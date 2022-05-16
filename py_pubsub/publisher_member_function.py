@@ -30,19 +30,19 @@ class MinimalPublisher(Node):   # Class 추가
 
     # timer_callbakc은 counter 값이 추가된 msg를 만들고 'get_logger()'를 사용해 콘솔에 게시함
     def timer_callback(self):
-        msg = String()
-        msg.data = 'Hello World: %d' % self.i
+        msg = String()  #?
+        msg.data = 'Hello World: %d' % self.i   # msg의 data 안에 Hello World와 self.i(timer callback이 호출된 횟수를 집어 넣음)
         self.publisher_.publish(msg)
-        self.get_logger().info('Publishing: "%s"' % msg.data)
-        self.i += 1     #? 그냥 퍼블리셔의 메시지에 넣기 위한 것인지 아니면 큐 size와 연관이 있는지
+        self.get_logger().info('Publishing: "%s"' % msg.data)   # 퍼블리싱된 내용을 콘솔에 게시함
+        self.i += 1     #? 그냥 퍼블리셔의 메시지에 넣기 위한 것인지 아니면 큐 size와 연관이 있는지  큐 size와 상관 없는 듯
 
 
 def main(args=None):
-    rclpy.init(args=args)
+    rclpy.init(args=args)   # rclpy 라이브러리 초기화
 
-    minimal_publisher = MinimalPublisher()
+    minimal_publisher = MinimalPublisher()  # node 생성
 
-    rclpy.spin(minimal_publisher)
+    rclpy.spin(minimal_publisher)   # node를 회전시켜 callback을 호출함
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
