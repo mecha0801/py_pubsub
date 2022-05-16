@@ -22,17 +22,19 @@ class MinimalPublisher(Node):   # Class 추가
 
     def __init__(self):
         super().__init__('minimal_publisher')   # super().__init__('minimal_publisher') : node class의 생성자를 호출하고 node 이름을 정의
-        self.publisher_ = self.create_publisher(String, 'topic', 10)
-        timer_period = 0.5  # seconds
-        self.timer = self.create_timer(timer_period, self.timer_callback)
-        self.i = 0
+        self.publisher_ = self.create_publisher(String, 'topic', 10)    # publisher의 msg type을 String으로 선언, 토픽의 이름을 'topic'으로 선언, 큐 size를 10으로 설정
+                                                                        # 큐 size는 subscriber가 msg를 충분히 빨리 수신하지 못하는 경우 대기 중인 메시지의 양을 제한함
+        timer_period = 0.5  # seconds 타이머가 0.5sec 마다 실행할 callback과 함께 timer가 생성됨
+        self.timer = self.create_timer(timer_period, self.timer_callback)   #? 타이머 생성
+        self.i = 0  #? "self.i"는 counter에 사용되는 callback 입니다.
 
+    # timer_callbakc은 counter 값이 추가된 msg를 만들고 'get_logger()'를 사용해 콘솔에 게시함
     def timer_callback(self):
         msg = String()
         msg.data = 'Hello World: %d' % self.i
         self.publisher_.publish(msg)
         self.get_logger().info('Publishing: "%s"' % msg.data)
-        self.i += 1
+        self.i += 1     #? 그냥 퍼블리셔의 메시지에 넣기 위한 것인지 아니면 큐 size와 연관이 있는지
 
 
 def main(args=None):
